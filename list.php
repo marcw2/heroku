@@ -14,8 +14,8 @@
 		<div class="jumbotron">
 			<h1>
 				<?php
-					if (!empty($_COOKIE['email'])){
-						echo $_COOKIE['email'];
+					if (isset($_SESSION['email'])){
+						echo $_SESSION['email'];
 					}
 				?>
 			</h1>

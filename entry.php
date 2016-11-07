@@ -12,10 +12,11 @@
 			if($res=mysqli_query($db,$sql)){
 				//$registers=$res->fetch_array();
 				$_SESSION['email']=$email;
-				var_dump($_SESSION);
+				//var_dump($_SESSION);
 
 				setcookie('email',$email,time()+1800,'/todo','');
 				header('Location:list.php');
+				exit();
 				}
 				//
 			}
