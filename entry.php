@@ -47,7 +47,11 @@
 			<div class="formgroup">
 			<label for"email">Email:</label>
 			<input type="text" name="email" 
-			value="<?= $_COOKIE['email'];?>" class="form-control">
+			value="<?php
+				if (isset($_COOKIE['email'])){
+					echo $_COOKIE['email'];
+				}
+			 ?>" class="form-control">
 			<label for="passw">Password</label><input type="password" name="passw" class="form-control">
 			<input type="submit" value="Sign in">
 			</div>
