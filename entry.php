@@ -1,22 +1,31 @@
 <?php 
+   require 'lib/bd.php';
 	
 	if(!empty($_POST)){
 		if(!empty($_POST['email']) && !empty($_POST['passw'])){
-			$email=$_POST['email'];
-			$passw=$_POST['passw'];
+			
+			$email = db_quote($_POST['email']);
+			$passw=db_quote($_POST['passw']);
+			
 			// comprovar BD
-			$db=conecta($dbhost,$dbuser,$dbpass,$dbname);
-			$sql="SELECT * FROM users WHERE email='$email' AND passw='$passw'";
-			//echo $sql;
+			$con=db_connect();
+			$sql="SELECT * FROM users WHERE email=".$email." AND passw=".$passw"";
+			echo $sql;
 			//fer consulta
-			if($res=mysqli_query($db,$sql)){
+			$result=db_select($sql);
+			var_dump($result);
+			die;
+			if($result){
 				//$registers=$res->fetch_array();
 				$_SESSION['email']=$email;
-				//var_dump($_SESSION);
-
 				setcookie('email',$email,time()+1800,'/todo','');
 				header('Location:list.php');
 				exit();
+				}
+				else{
+					
+					header('Location:.');
+					exit();
 				}
 				//
 			}
@@ -43,6 +52,11 @@
   		</div>
 	</header>
 	<div class="container-fluid">
+	<nav class="navbar navbar-default">
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="register.php">Sign up</a></li>
+		</ul>
+	</nav>
 		<form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
 			<div class="formgroup">
 			<label for"email">Email:</label>

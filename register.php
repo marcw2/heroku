@@ -1,13 +1,13 @@
 <?php
 	
 	if(!empty($_POST)){
-		if(!empty($_POST['email']) && !empty($_POST['passw'])){
+		if(!(empty($_POST['email'])) && !(empty($_POST['passw']))){
 			$email=$_POST['email'];
 			$passw=$_POST['passw'];
 			//completar entrada
 			$sql="INSERT INTO users(email,passw) values('$email','$passw')";
 			echo $sql;
-			if($result=)
+			
 			}
 	}
 ?>

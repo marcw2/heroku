@@ -2,7 +2,8 @@
 	session_start();
 	
 	ini_set('display_errors','1');
+	if (isset($_SESSION)){
+		unset($_SESSION);
+	}
 	
-	include 'config.inc.php';
-	require 'lib/bd.php';
 	include 'entry.php';
