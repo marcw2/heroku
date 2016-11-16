@@ -1,31 +1,45 @@
-<?php 
-   require 'lib/bd.php';
+<?php
+	require_once 'lib/con.php';
 	
+	
+
 	if(!empty($_POST)){
 		if(!empty($_POST['email']) && !empty($_POST['passw'])){
 			
-			$email = db_quote($_POST['email']);
-			$passw=db_quote($_POST['passw']);
+			$email = htmlspecialchars($_POST['email']);
+			$passw=htmlspecialchars($_POST['passw']);
 			
 			// comprovar BD
-			$con=db_connect();
-			$sql="SELECT * FROM users WHERE email=".$email." AND passw=".$passw"";
-			echo $sql;
-			//fer consulta
-			$result=db_select($sql);
-			var_dump($result);
-			die;
-			if($result){
+			
+
+			$sql="SELECT id FROM users WHERE email = ? AND  passw = ?"; 
+			try{
+			$stmt = $conn->prepare($sql);
+			$stmt->bind_param("ss",$email,$passw);
+
+			$stmt->execute();
+			$stmt->bind_result($id);
+			$stmt->store_result();
+			$nrow=$stmt->num_rows;
+
+			$stmt->fetch();
+			$stmt->close();
+			}catch(Exception $e){
+				echo $e->message;
+			}	
+			if($nrow==1){
 				//$registers=$res->fetch_array();
 				$_SESSION['email']=$email;
+				$_SESSION['id']=$id;
 				setcookie('email',$email,time()+1800,'/todo','');
-				header('Location:list.php');
-				exit();
+				
+				header('Location: /todo/list.php',true,303);
+				exit;
 				}
 				else{
 					
-					header('Location:.');
-					exit();
+					header('Location:.',true,303);
+					exit;
 				}
 				//
 			}
@@ -45,13 +59,14 @@
 	<title>TODO</title>
 </head>
 <body>
+	
+	<div class="container-fluid">
 	<header>
 		<div class="jumbotron text-center" >
   			<h1>TODO</h1>
   			<p>GEt your list, complete your tasks!</p>
   		</div>
 	</header>
-	<div class="container-fluid">
 	<nav class="navbar navbar-default">
 		<ul class="nav navbar-nav">
 			<li class="active"><a href="register.php">Sign up</a></li>

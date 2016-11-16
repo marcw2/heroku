@@ -1,15 +1,22 @@
 <?php
-	
+	session_start();
+	include 'lib/con.php';
+	//preparing statement
 	if(!empty($_POST)){
 		if(!(empty($_POST['email'])) && !(empty($_POST['passw']))){
-			$email=$_POST['email'];
-			$passw=$_POST['passw'];
+			$email = htmlspecialchars($_POST['email']);
+			$passw=htmlspecialchars($_POST['passw']);
 			//completar entrada
-			$sql="INSERT INTO users(email,passw) values('$email','$passw')";
-			echo $sql;
-			
+			$sql="INSERT INTO users(email,passw) values(?,?)";
+			$stmt=$conn->prepare($sql);
+			$stmt->bind_param("ss",$email,$passw);
+			if ($stmt->execute()){
+				$stmt->close();
+				header('Location:entry.php');
+				exit;
 			}
 	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="ca">
