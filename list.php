@@ -44,7 +44,7 @@
 					echo '<td>'.($completed==0?'':'<del>').$desc.($completed==0?'':'</del>').'</td>';
 					echo '<td>'.date("d-m-Y H:i:s", $timestamp).'</td>';
 					echo '<td>'.($completed==0?'No':'Si').'</td>';
-					echo '<td><a href="complete.php">'.Complete.'</a></td>';
+					echo '<td><a href="complete.php?task='.$id.'">'.Complete.'</a></td>';
 					
 					echo '</tr>';
 				}
