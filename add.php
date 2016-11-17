@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include 'lib/con.php';
-	mysqli_report(MYSQLI_REPORT_STRICT);
+	
 	//preparing statement
 	if(!empty($_POST)){
 		if(!(empty($_POST['desc'])) && !(empty($_POST['dates']))){
@@ -47,7 +47,7 @@
   			<p>Register your task <?= $_SESSION['email']; ?></p>
   		</div>
   		<nav class="navbar navbar-default">
-  		<ul class="nav navbar-nav"><li class="active"><a href="entry.php">Home</a></li></ul></nav>
+  		<ul class="nav navbar-nav"><li class="active"><a href="list.php">Back</a></li></ul></nav>
 	</header>
 	<form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
 		<div class="form-group">

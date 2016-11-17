@@ -18,6 +18,7 @@
 			$stmt->bind_param("ss",$email,$passw);
 
 			$stmt->execute();
+			//extract $id from user
 			$stmt->bind_result($id);
 			$stmt->store_result();
 			$nrow=$stmt->num_rows;
@@ -32,12 +33,12 @@
 				$_SESSION['email']=$email;
 				$_SESSION['id']=$id;
 				setcookie('email',$email,time()+1800,'/todo','');
-				
+				//redirect 
 				header('Location: /todo/list.php',true,303);
 				exit;
 				}
 				else{
-					
+					//redirect
 					header('Location:.',true,303);
 					exit;
 				}
