@@ -1,7 +1,7 @@
 <?php
 	session_start();
-	include 'lib/con.php';
-	
+	require 'lib/con.php';
+
 	//preparing statement
 	if(!empty($_POST)){
 		if(!(empty($_POST['desc'])) && !(empty($_POST['dates']))){
@@ -9,13 +9,13 @@
 			$dates=htmlspecialchars($_POST['dates']);
 			//$data=date("Y-m-d h:m:s", strtotime($dates));
 			//completar entrada
-			$sql="INSERT INTO `tasks`( `desc`, `dates`, `completed`, `user`) VALUES (?,?,0,?)";
-			
+			$sql="INSERT INTO tasks(descr,data, completed,user) VALUES (?,?,0,?)";
+
 			try{
 				$stmt=$conn->prepare($sql);
-				
+				var_dump($conn->error_list);
 				$stmt->bind_param("sss",$desc,$dates,$_SESSION['id']);
-		
+
 				if ($stmt->execute()){
 					$stmt->close();
 					header('Location:list.php');
@@ -27,8 +27,8 @@
 			}catch(Exception $e){
 				echo $e->message;
 			}
-			
-			
+
+
 	}
 }
 ?>

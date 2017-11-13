@@ -1,12 +1,21 @@
 <?php
 	session_start();
 	include 'lib/con.php';
+
 	//preparing statement
-	$stmt=$conn->prepare("SELECT  `tasks`.`id`,`tasks`.`desc`, `tasks`.`dates`, `tasks`.`completed`
-	 FROM `users` LEFT JOIN `tasks` ON `tasks`.`user` = `users`.`id` WHERE `users`.`email`=? ");
-	$stmt->bind_param('s',$_SESSION['email']);
-	$stmt->execute();
-	$stmt->bind_result($id,$desc,$dates,$completed);	
+	try{
+	$stmt=$conn->prepare("SELECT  t.id,t.descr, t.data, t.completed
+	 FROM users LEFT JOIN tasks t ON t.user = users.id WHERE users.email=? ");
+
+		  $stmt->bind_param('s',$_SESSION['email']);
+	 		$stmt->execute();
+	 		$stmt->bind_result($id,$desc,$dates,$completed);
+
+	}catch(Exception $e){
+	 echo $e->getMessage();
+ }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +43,7 @@
 			<li class="active"><a href="exit.php">Logout</a></li>
 		</ul>
 	</nav>
-		
+
 		<table class="table table-striped">
 		<thead>
 		      <tr>
@@ -45,25 +54,27 @@
 		        <th>Delete</th>
 		      </tr>
 		</thead>
-			<?php 
+			<?php
+
 				while($stmt->fetch()){
 					$timestamp=strtotime($dates);
 					echo '<tr>';
 					echo '<td>'.($completed==0?'':'<del>').$desc.($completed==0?'':'</del>').'</td>';
 					echo '<td>'.date("d-m-Y H:i:s", $timestamp).'</td>';
 					echo '<td>'.($completed==0?'No':'Si').'</td>';
-					echo '<td><button type="button" class="btn btn-info"><a href="complete.php?task='.$id.'">'.Complete.'</a></button></td>';
-					echo '<td><button type="button" class="btn btn-default btn-sm"><a href="del.php?task='.$id.'">Del</a></button></td>';
-					
+					echo '<td><a href="complete.php?task='.$id.'"><button type="button" class="btn btn-info">Complete</button></a></td>';
+					echo '<td><a href="del.php?task='.$id.'"><button type="button" class="btn btn-default btn-sm">Del</button></a></td>';
+
 					echo '</tr>';
-				}
+
+			}
 			?>
-				
-			
+
+
 		</table>
 	</div>
 	<footer>
-		<h6 align="center">&copy; Toni- 2016</h6>
+		<h6 align="center">&copy; Toni- 2017</h6>
 	</footer>
 </body>
 </html>

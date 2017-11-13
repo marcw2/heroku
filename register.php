@@ -6,15 +6,20 @@
 		if(!(empty($_POST['email'])) && !(empty($_POST['passw']))){
 			$email = htmlspecialchars($_POST['email']);
 			$passw=htmlspecialchars($_POST['passw']);
+			$passw2=htmlspecialchars($_POST['passw']);
 			//completar entrada
-			$sql="INSERT INTO users(email,passw) values(?,?)";
-			$stmt=$conn->prepare($sql);
-			$stmt->bind_param("ss",$email,$passw);
-			if ($stmt->execute()){
-				$stmt->close();
-				header('Location:entry.php');
-				exit;
+			if($passw==$passw2){
+				$sql="INSERT INTO users(email,passw) values(?,?)";
+
+				$stmt=$conn->prepare($sql);
+				$stmt->bind_param("ss",$email,$passw);
+				if ($stmt->execute()){
+					$stmt->close();
+					header('Location:entry.php');
+					exit;
+				}
 			}
+
 	}
 }
 ?>
@@ -39,6 +44,7 @@
 		<div class="form-group">
 			Email<input class="form-control" type="text" name="email">
 			Password<input class="form-control" type="password" name="passw">
+			Repeat password<input class="form-control" type="password" name="passw2">
 		</div>
 		<input type="submit" value="Sign up">
 	</form>

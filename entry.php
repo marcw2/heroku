@@ -1,39 +1,43 @@
 <?php
-	require_once 'lib/con.php';
-	
-	
+	include 'lib/con.php';
+
+
 
 	if(!empty($_POST)){
 		if(!empty($_POST['email']) && !empty($_POST['passw'])){
-			
+
 			$email = htmlspecialchars($_POST['email']);
 			$passw=htmlspecialchars($_POST['passw']);
-			
-			// comprovar BD
-			
 
-			$sql="SELECT id FROM users WHERE email = ? AND  passw = ?"; 
+			// comprovar BD
+
+			$sql1="SELECT * FROM users";
+			$sql="SELECT id FROM users WHERE email = ? AND  passw = ?";
 			try{
 			$stmt = $conn->prepare($sql);
+
 			$stmt->bind_param("ss",$email,$passw);
 
 			$stmt->execute();
+
 			//extract $id from user
 			$stmt->bind_result($id);
+
 			$stmt->store_result();
 			$nrow=$stmt->num_rows;
 
 			$stmt->fetch();
+
 			$stmt->close();
 			}catch(Exception $e){
 				echo $e->message;
-			}	
+			}
 			if($nrow==1){
 				//$registers=$res->fetch_array();
 				$_SESSION['email']=$email;
 				$_SESSION['id']=$id;
 				setcookie('email',$email,time()+1800,'/todo','');
-				//redirect 
+				//redirect
 				header('Location: /todo/list.php',true,303);
 				exit;
 				}
@@ -44,12 +48,12 @@
 				}
 				//
 			}
-		 
+
 	}
-		
-		
-		 
-	
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ca">
@@ -60,7 +64,7 @@
 	<title>TODO</title>
 </head>
 <body>
-	
+
 	<div class="container-fluid">
 	<header>
 		<div class="jumbotron text-center" >
@@ -76,7 +80,7 @@
 		<form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
 			<div class="formgroup">
 			<label for"email">Email:</label>
-			<input type="text" name="email" 
+			<input type="text" name="email"
 			value="<?php
 				if (isset($_COOKIE['email'])){
 					echo $_COOKIE['email'];
@@ -87,6 +91,6 @@
 			</div>
 		</form>
 	</div>
-	
+
 </body>
 </html>
